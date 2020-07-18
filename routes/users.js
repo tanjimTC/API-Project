@@ -12,4 +12,9 @@ router
   .put(userController.replaceUser)
   .patch(userController.updateUser);
 
+router
+  .route("/:userID/cars")
+  .get(userController.getUserCars)
+  .post(userController.newUserCar);
+
 module.exports = router;
