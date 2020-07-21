@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const Car = require("../models/car");
+
 module.exports = {
   index: async (req, res, next) => {
     const users = await User.find({});
@@ -7,45 +8,45 @@ module.exports = {
   },
 
   newUser: async (req, res, next) => {
-    const newUser = new User(req.body);
+    const newUser = new User(req.value.body);
     const user = await newUser.save();
     res.status(201).json(user);
   },
 
   getUser: async (req, res, next) => {
-    const { userID } = req.params;
-    const user = await User.findById(userID);
+    const { userId } = req.value.params;
+    const user = await User.findById(userId);
     res.status(200).json(user);
   },
 
   replaceUser: async (req, res, next) => {
     //Enforce and make sure req.body contains all the fields
-    const { userID } = req.params;
-    const newUser = req.body;
-    const result = await User.findByIdAndUpdate(userID, newUser);
+    const { userId } = req.value.params;
+    const newUser = req.value.body;
+    const result = await User.findByIdAndUpdate(userId, newUser);
     res.status(200).json({ status: true });
   },
 
   updateUser: async (req, res, next) => {
     //req.body may contains any number of fields
-    const { userID } = req.params;
-    const newUser = req.body;
-    const result = await User.findByIdAndUpdate(userID, newUser);
+    const { userId } = req.value.params;
+    const newUser = req.value.body;
+    const result = await User.findByIdAndUpdate(userId, newUser);
     res.status(200).json({ status: true });
   },
 
   getUserCars: async (req, res, next) => {
-    const { userID } = req.params;
-    const user = await User.findById(userID).populate("cars");
+    const { userId } = req.value.params;
+    const user = await User.findById(userId).populate("cars");
     res.status(200).json(user.cars);
   },
 
   newUserCar: async (req, res, next) => {
-    const { userID } = req.params;
+    const { userId } = req.value.params;
     // create new car form req.body
-    const newCar = new Car(req.body);
+    const newCar = new Car(req.value.body);
     // Get the user
-    const user = await User.findById(userID);
+    const user = await User.findById(userId);
     // Assign that user to the car's seller
     newCar.seller = user;
     // Save the car to database with the change (with seller info/user)
@@ -59,8 +60,3 @@ module.exports = {
     res.status(201).json(newCar);
   },
 };
-
-// we can interact with Mongoose in 3 different ways
-//   1 = callback function
-//   2 = Pormises
-//   3 = async/await
