@@ -11,13 +11,14 @@ const app = express();
 
 //Routes
 const users = require("./routes/users");
-
+const cars = require("./routes/cars");
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
 // Routes
 app.use("/users", users);
+app.use("/cars", cars);
 
 // Catch 404 Errors and send them to Error handler
 app.use((req, res, next) => {
